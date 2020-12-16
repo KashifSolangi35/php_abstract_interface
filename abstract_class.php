@@ -6,7 +6,7 @@ abstract class Abstract_class{
 		$dbHost     = "localhost";
 		$dbUserName = "root";
 		$dbPassword = "";
-		$dbDatabase = "atif";
+		$dbDatabase = "staff_information";
 
 		// establish a database connection
 		if(!isset($GLOBALS['dbConntion'])){
