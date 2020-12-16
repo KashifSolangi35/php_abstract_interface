@@ -6,7 +6,7 @@ abstract class Abstract_class{
 		$dbHost     = "localhost";
 		$dbUserName = "root";
 		$dbPassword = "";
-		$dbDatabase = "staff_information";
+		$dbDatabase = "atif";
 
 		// establish a database connection
 		if(!isset($GLOBALS['dbConntion'])){
@@ -45,17 +45,14 @@ abstract class Abstract_class{
 			if ($rowCount != 0){
 				// move result set to an associative array
 				$rsArray = $qeuryResult->fetch_all(MYSQLI_ASSOC);
-
-
+				
 				// add array set
 				$resArray['res'] =200;
 				$resArray['msg'] ='Success';
 				$resArray['dataArray'] =$rsArray;
 
 				// Free result set
-				//$qeuryResult->fee_result();
-
-
+				$qeuryResult->free_result();
 
 			} else {
 				// no data returned
@@ -63,9 +60,6 @@ abstract class Abstract_class{
 				$resArray['msg'] ='Query did not return any results.';
 
 			}
-
-			
-
 
 		}
 		return $resArray;
