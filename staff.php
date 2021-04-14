@@ -2,7 +2,8 @@
 require_once('abstract_class.php');
 require_once('interface_data.php');
 
-class Staff extends Abstract_class implements Interface_data{
+class Staff extends Abstract_class implements Interface_data
+{
 
     public function __construct()
     {
@@ -13,6 +14,7 @@ class Staff extends Abstract_class implements Interface_data{
             die;
         }
     }
+    
     public function insert_db()
     {
         // Insert Code goes here...

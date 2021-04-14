@@ -1,6 +1,16 @@
 <?php
 abstract class Abstract_class{
 
+	/*********************************************************************************
+	 * ------> GENERIC CLASS FOR DATABASE CRUD OPERATION - MYSQLi <-----------
+	 *
+	 * Author: MD Danish <trade.danish@gmail.com>
+	 * Date Written: Jan 19, 2016
+	 * Usage: $object = new db_api;
+	 *        $object-> delete ( ... ) OR insert( ... ) etc...
+	 ********************************************************************************/
+
+	
 	protected function dbConnect(){
 		
 		$dbHost     = "localhost";
@@ -28,6 +38,14 @@ abstract class Abstract_class{
 	}
 
 
+	/***************************************************************
+    Manual: function to retrieve the record from database
+    $myfields = "first_name,last_name";
+    $mytable = "iws_profiles";
+    $where = "profile_id='1' AND is_verified=1";
+    var_dump($this->select( $myfields , $mytable ,$where ) );
+    Usage: $this->select($myfields,$mytable,$where);
+    ***************************************************************/
 
 	protected function getResult($queryString){
 		// execute db query
@@ -66,6 +84,16 @@ abstract class Abstract_class{
 
 	}
 
+
+	/**************************************************************
+    Manual: function to update the record into database
+    $fields = array(    'first_name'=>'MD','last_name'=>'Danish');
+    $mytable = "iws_profiles";
+    $where = "profile_id='1' AND is_verified=1";
+    var_dump($this->update( $fields , $mytable ,$where ) );
+    Usage: $this->update($fields,$mytable,$where);
+    return : 0 on failure or 1 on success
+    **************************************************************/
 
 
 	protected function update_db($table, $data, $where)
@@ -122,6 +150,72 @@ abstract class Abstract_class{
 		return $resArray;
 
 	}
+
+ 	
+ 	/**************************************************************
+    Manual: Function to delete the record from database
+    $mytable = "iws_profiles";
+    $where = "profile_id='4'";
+    var_dump($this->delete( $mytable ,$where ) );
+    Usage: $this->delete($mytable,$where);
+    return : 0 on failure or 1 on success
+    **************************************************************/
+
+
+ 	protected  function delete_db($table_name, $where)
+    {
+     	$resArray = [];    
+        $query = "DELETE FROM $table_name WHERE 1";
+        if (!empty($where)) {
+            $query = "DELETE FROM $table_name WHERE $where";
+        }
+        $result = mysqli_query($connection, $query);
+        return $result;
+    }
+
+
+
+
+
+    /***************************************************************
+    Manual: function to insert the record from database
+    $tbl_name = "iws_profiles";
+    $a_data=array("username"=>"nalini","email"=>"nalini@gmail.com","mobile_no"=>"XXXX","zip_code"=>"500072");
+    var_dump($this->insert( $myfields , $mytable ) );
+    Usage: $this->insert($myfields,$mytable);
+    return  : 0 on failure or 1 on success
+    ***************************************************************/
+    function insert($a_data, $tbl_name)
+    {
+        global $connection;
+        $fields = array_keys($a_data);
+        $sql    = "INSERT INTO " . $tbl_name . " (`" . implode('`,`', $fields) . "`) VALUES('" . implode("','", $a_data) . "')"; //echo $sql; die();
+        $result = mysqli_query($connection, $sql);
+        return $result;
+    }
+
+
+    /***************************************************************
+    Manual: function to execute given query
+    var_dump($this->custom( "Select count(*) as Number_Of_Stars from Sky" ) );
+    return  : 0 on Failure Or No Data And Array on Operation Success
+    ***************************************************************/
+    function custom($query) {
+        global $connection;
+        $result = mysqli_query($connection, $query);
+      
+        if (mysqli_num_rows($result) > 0) {
+            while ($row = mysqli_fetch_assoc($result)) {
+                $data[] = $row;				
+            }			 
+            return $data;
+        } else {
+            return 0;
+        }
+    }
+
+
+
 
 
 
