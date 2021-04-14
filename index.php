@@ -1,14 +1,10 @@
 <?php
 require_once('staff.php');
 $staff_obj = new Staff;
-
 $where = "";
-//$where = "name_code='KMS'";
 $where = "is_active=1";
-
 $staff_res = $staff_obj->getData($where);
-//var_dump($staff_res); 
-//die;
+
 
 $html = "";
 $html .= '<!DOCTYPE html>';
@@ -25,7 +21,7 @@ $html .= '<body>';
 
 $html .= '<div class="container">';
   
-if($staff_res['res']=== 200 || 204){
+if($staff_res['res']===(200 || 204) ){
     $html .= "<h1> Staff Information </h1>";
     $html .= "<table class='table table-bordered'>";
     $html .= "<thead>";

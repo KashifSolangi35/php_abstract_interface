@@ -6,7 +6,7 @@ abstract class Abstract_class{
 		$dbHost     = "localhost";
 		$dbUserName = "root";
 		$dbPassword = "";
-		$dbDatabase = "atif";
+		$dbDatabase = "";
 
 		// establish a database connection
 		if(!isset($GLOBALS['dbConntion'])){
@@ -65,5 +65,65 @@ abstract class Abstract_class{
 		return $resArray;
 
 	}
+
+
+
+	protected function update_db($table, $data, $where)
+	{
+		$resArray = [];
+		if( isset($GLOBALS['dbConntion']->errno) && ($GLOBALS['dbConntion']->errno != 0))
+		{
+			// if error occured. raised it.
+			$resArray['res'] = 500;
+			$resArray['msg'] = 'Internal server error. MySQL error: ' . $GLOBALS['dbConntion']->errno;
+
+		} 
+		else 
+		{
+			try {
+				
+			    
+			    $query='UPDATE `'.$table.'` SET ';
+			    foreach($data as $key => $value)
+			    {
+			        $query .= '`'.$key.'`=:'.$key.','; 
+			    }
+			    $query = substr($query, 0, -1);
+			    $query .= ' WHERE ';
+			    foreach($where as $key => $value)
+			    {
+			        $query .= '`'.$key.'`=:'.$key.','; 
+			    }
+			    $query = substr($query, 0, -1);
+
+			    $data += $where;
+
+			    
+			    $update = $GLOBALS['dbConntion']->prepare($query);
+			    $update->execute($data);
+
+
+			    $resArray['res'] =200;
+				$resArray['msg'] ='Successfully updated!';
+				 
+
+
+
+			}
+			catch (Exception $e) {
+			   
+			    $resArray['res'] =204;
+				$resArray['msg'] = $e->getMessage();
+			}	
+
+		}
+
+
+		return $resArray;
+
+	}
+
+
+
 
 }
